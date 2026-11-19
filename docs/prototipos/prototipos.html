@@ -1,0 +1,310 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>CalçadaCerta – Protótipos de tela</title>
+<style>
+  :root{
+    --ink:#1d1d1f; --ink2:#55575c; --ink3:#8a8d93; --line:#c9cbd0; --fill:#eceef1; --fill2:#f6f7f9;
+    --paper:#ffffff; --bg:#e4e6ea; --accent:#1f5fbf; --accent-soft:#dfe9f8; --warn:#b4540a; --warn-soft:#fbeadb;
+    --ok:#2c7a3f; --ok-soft:#dff0e3;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);font-family:"Segoe UI",Arial,sans-serif;color:var(--ink);padding:36px 40px 30px}
+  h1{font-size:26px;font-weight:700;letter-spacing:-.2px}
+  .sub{color:var(--ink2);font-size:14px;margin:4px 0 26px}
+  .grid{display:grid;grid-template-columns:repeat(3,360px);gap:34px 40px}
+  .cell{display:flex;flex-direction:column;gap:10px}
+  .cap{display:flex;justify-content:space-between;align-items:baseline}
+  .cap b{font-size:15px;white-space:nowrap}
+  .cap code{white-space:nowrap}
+  .cap code{font:12px Consolas,monospace;color:var(--ink2);background:var(--paper);border:1px solid var(--line);border-radius:4px;padding:2px 6px}
+  .phone{width:360px;height:720px;background:var(--paper);border:2px solid var(--ink);border-radius:30px;overflow:hidden;position:relative;display:flex;flex-direction:column}
+  .status{height:28px;display:flex;justify-content:space-between;align-items:center;padding:0 22px;font-size:11px;color:var(--ink2)}
+  .bar{display:flex;align-items:center;gap:10px;padding:8px 18px 12px;border-bottom:1px solid var(--line)}
+  .bar .t{font-weight:700;font-size:17px}
+  .back{width:26px;height:26px;border:1.5px solid var(--ink2);border-radius:50%;display:grid;place-items:center;font-size:13px;color:var(--ink2)}
+  .body{flex:1;padding:16px 18px;display:flex;flex-direction:column;gap:12px;overflow:hidden}
+  .lbl{font-size:12px;color:var(--ink2);font-weight:600;margin-bottom:5px}
+  .in{height:40px;border:1.5px solid var(--line);border-radius:9px;display:flex;align-items:center;justify-content:space-between;padding:0 12px;font-size:14px;color:var(--ink)}
+  .in.ph{color:var(--ink3)}
+  .in .ic{color:var(--ink3);font-size:12px}
+  .ta{height:96px;align-items:flex-start;padding-top:10px;position:relative}
+  .ta small{position:absolute;right:10px;bottom:8px;font-size:11px;color:var(--ink3)}
+  .chips{display:flex;flex-wrap:wrap;gap:7px}
+  .chip{border:1.5px solid var(--line);border-radius:999px;padding:6px 11px;font-size:12.5px;color:var(--ink2)}
+  .chip.on{border-color:var(--accent);background:var(--accent-soft);color:var(--accent);font-weight:600}
+  .btn{height:46px;border-radius:11px;background:var(--ink);color:#fff;display:grid;place-items:center;font-weight:600;font-size:15px}
+  .btn.ghost{background:transparent;color:var(--ink);border:1.5px solid var(--ink)}
+  .muted{font-size:12px;color:var(--ink3);text-align:center}
+  .card{border:1.5px solid var(--line);border-radius:12px;padding:12px 14px}
+  .row{display:flex;justify-content:space-between;align-items:center}
+  .toggle{width:42px;height:24px;border-radius:12px;background:var(--accent);position:relative}
+  .toggle::after{content:"";position:absolute;right:3px;top:3px;width:18px;height:18px;border-radius:50%;background:#fff}
+  .nav{height:62px;border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(4,1fr);text-align:center;font-size:11px;color:var(--ink3);padding-top:9px}
+  .nav i{display:block;width:22px;height:22px;margin:0 auto 4px;border:1.5px solid var(--ink3);border-radius:6px}
+  .nav .on{color:var(--accent);font-weight:600}.nav .on i{border-color:var(--accent);background:var(--accent-soft)}
+  .avatar{width:64px;height:64px;border-radius:50%;background:var(--fill);border:1.5px dashed var(--ink3);margin:2px auto 0;display:grid;place-items:center;font-size:11px;color:var(--ink3)}
+  .hello{font-size:20px;font-weight:700}
+  .stat{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .stat div{background:var(--fill2);border-radius:10px;padding:9px 11px}
+  .stat b{display:block;font-size:19px}.stat span{font-size:11px;color:var(--ink2)}
+  .map{height:200px;border:1.5px solid var(--line);border-radius:12px;background:repeating-linear-gradient(0deg,var(--fill2) 0 19px,#e9ebef 19px 20px),var(--fill2);overflow:hidden}
+  .steps{display:flex;flex-direction:column}
+  .step{display:grid;grid-template-columns:22px 1fr;gap:10px;font-size:13px}
+  .step .dot{width:14px;height:14px;border-radius:50%;border:3px solid var(--accent);background:#fff;margin:2px 4px 0}
+  .step .ln{width:3px;background:var(--accent);margin:0 auto;height:100%}
+  .step .seg{font-size:11.5px;color:var(--ink2);padding:2px 0 10px}
+  .tag{display:inline-block;font-size:10.5px;font-weight:600;border-radius:5px;padding:2px 6px;margin-right:4px}
+  .tag.w{background:var(--warn-soft);color:var(--warn)}
+  .tag.o{background:var(--ok-soft);color:var(--ok)}
+  .tag.n{background:var(--fill);color:var(--ink2)}
+  .tag.a{background:var(--accent-soft);color:var(--accent)}
+  .alert{background:var(--warn-soft);border-radius:10px;padding:9px 11px;font-size:12px;color:var(--warn)}
+  .tabs{display:flex;gap:6px}
+  .tabs span{flex:1;text-align:center;font-size:12.5px;padding:7px 0;border-radius:8px;background:var(--fill2);color:var(--ink2)}
+  .tabs .on{background:var(--ink);color:#fff;font-weight:600}
+  .item{border:1.5px solid var(--line);border-radius:12px;padding:10px 12px;display:flex;flex-direction:column;gap:4px}
+  .item .h{display:flex;justify-content:space-between;align-items:center;font-size:13.5px;font-weight:600}
+  .item p{font-size:12px;color:var(--ink2)}
+  .item .f{display:flex;justify-content:space-between;align-items:center;font-size:11px;color:var(--ink3)}
+  .acts{display:flex;gap:6px}
+  .acts span{font-size:11px;border:1px solid var(--line);border-radius:6px;padding:2px 7px;color:var(--ink2)}
+  .acts .del{color:#b3261e;border-color:#e6b4b0}
+  .fab{position:absolute;right:18px;bottom:78px;height:46px;padding:0 18px;border-radius:23px;background:var(--accent);color:#fff;font-weight:600;font-size:14px;display:grid;place-items:center;box-shadow:0 3px 8px rgba(0,0,0,.18)}
+  .search{height:36px;border-radius:9px;background:var(--fill2);display:flex;align-items:center;padding:0 12px;font-size:13px;color:var(--ink3)}
+  .legend{display:flex;gap:14px;font-size:12px;color:var(--ink2);margin-top:22px;align-items:center}
+  .legend i{display:inline-block;width:14px;height:14px;border-radius:4px;vertical-align:-2px;margin-right:5px}
+  body.single{padding:0;background:var(--paper)}
+  body.single h1,body.single .sub,body.single .legend,body.single .cap{display:none}
+  body.single .grid{display:block}
+  body.single .cell{display:none;padding:20px}
+  body.single .cell.show{display:flex}
+</style>
+</head>
+<body>
+<h1>CalçadaCerta · Protótipos de tela (wireframes)</h1>
+<p class="sub">Aplicativo móvel que consome a API RESTful. Cada tela indica o endpoint principal que ela usa.</p>
+
+<div class="grid">
+
+<!-- 1. Cadastro -->
+<div class="cell" id="s1">
+  <div class="cap"><b>Tela 1 · Cadastro</b><code>POST /api/usuarios</code></div>
+  <div class="phone">
+    <div class="status"><span>9:41</span><span>▮▮▮ ◔ ▬</span></div>
+    <div class="bar"><span class="t">Criar conta</span></div>
+    <div class="body">
+      <div class="avatar">logo</div>
+      <p class="muted" style="margin-top:-4px">Rotas a pé acessíveis para o seu jeito de caminhar</p>
+      <div><div class="lbl">Nome completo</div><div class="in ph">Digite seu nome</div></div>
+      <div><div class="lbl">E-mail</div><div class="in ph">nome@exemplo.com.br</div></div>
+      <div>
+        <div class="lbl">Como você se desloca?</div>
+        <div class="chips">
+          <span class="chip">Padrão</span><span class="chip">Idoso</span>
+          <span class="chip on">✓ Cadeirante</span><span class="chip">Gestante</span>
+          <span class="chip">Carrinho de bebê</span>
+        </div>
+      </div>
+      <p style="font-size:11.5px;color:var(--ink2)">O perfil define quais trechos evitar. Ex.: cadeirante e carrinho de bebê nunca passam por escadas.</p>
+      <div style="flex:1"></div>
+      <div class="btn">Cadastrar</div>
+      <p class="muted">Já tenho conta · <u>Entrar</u></p>
+    </div>
+  </div>
+</div>
+
+<!-- 2. Início / buscar rota -->
+<div class="cell" id="s2">
+  <div class="cap"><b>Tela 2 · Buscar rota</b><code>GET /api/locais</code></div>
+  <div class="phone">
+    <div class="status"><span>9:41</span><span>▮▮▮ ◔ ▬</span></div>
+    <div class="body" style="padding-top:12px">
+      <div class="row"><div><p style="font-size:12px;color:var(--ink2)">Olá,</p><p class="hello">Usuário Exemplo 01</p></div><span class="tag a">Cadeirante</span></div>
+      <div class="card" style="display:flex;flex-direction:column;gap:10px">
+        <b style="font-size:15px">Para onde você vai?</b>
+        <div><div class="lbl">Origem</div><div class="in">FIAP Paulista <span class="ic">▾</span></div></div>
+        <div><div class="lbl">Destino</div><div class="in">UBS Bela Vista <span class="ic">▾</span></div></div>
+        <div><div class="lbl">Perfil da rota</div><div class="in">Cadeirante <span class="ic">▾</span></div></div>
+        <div class="row" style="padding:2px 0"><div><b style="font-size:13.5px">Está chovendo?</b><p style="font-size:11px;color:var(--ink2)">Evita trechos com risco de alagamento</p></div><div class="toggle"></div></div>
+        <div class="btn">Calcular rota acessível</div>
+      </div>
+      <div class="lbl" style="margin:2px 0 -4px">Na sua região</div>
+      <div class="stat">
+        <div><b>8</b><span>locais mapeados</span></div>
+        <div><b>3</b><span>relatos abertos</span></div>
+      </div>
+    </div>
+    <div class="nav"><div class="on"><i></i>Rotas</div><div><i></i>Relatos</div><div><i></i>Gestão</div><div><i></i>Perfil</div></div>
+  </div>
+</div>
+
+<!-- 3. Resultado -->
+<div class="cell" id="s3">
+  <div class="cap"><b>Tela 3 · Rota calculada</b><code>GET /api/rotas</code></div>
+  <div class="phone">
+    <div class="status"><span>9:41</span><span>▮▮▮ ◔ ▬</span></div>
+    <div class="bar"><span class="back">‹</span><span class="t">Rota acessível</span></div>
+    <div class="body" style="gap:10px">
+      <div class="map">
+        <svg viewBox="0 0 324 200" width="100%" height="100%">
+          <g stroke="#a3a7ae" stroke-width="2.5" fill="none" stroke-linecap="round">
+            <line x1="40" y1="150" x2="130" y2="120"/>
+            <line x1="40" y1="150" x2="110" y2="180"/>
+            <line x1="130" y1="120" x2="195" y2="150"/>
+            <line x1="110" y1="180" x2="285" y2="168"/>
+            <line x1="285" y1="168" x2="285" y2="85"/>
+            <line x1="195" y1="150" x2="285" y2="168"/>
+          </g>
+          <g stroke="#b4540a" stroke-width="2.5" stroke-dasharray="5 4" fill="none">
+            <line x1="130" y1="120" x2="285" y2="85"/>
+            <line x1="110" y1="180" x2="195" y2="150"/>
+          </g>
+          <polyline points="40,150 40,42 160,42 285,85" stroke="#1f5fbf" stroke-width="5" fill="none" stroke-linejoin="round" stroke-linecap="round"/>
+          <g fill="#fff" stroke="#6b6e74" stroke-width="2">
+            <circle cx="130" cy="120" r="5"/><circle cx="110" cy="180" r="5"/><circle cx="195" cy="150" r="5"/><circle cx="285" cy="168" r="5"/>
+          </g>
+          <g fill="#fff" stroke="#1f5fbf" stroke-width="3">
+            <circle cx="40" cy="42" r="6"/><circle cx="160" cy="42" r="6"/>
+          </g>
+          <circle cx="40" cy="150" r="8" fill="#1d1d1f"/>
+          <circle cx="285" cy="85" r="8" fill="#1f5fbf"/>
+          <g font-family="Segoe UI" font-size="10.5" fill="#1d1d1f">
+            <text x="50" y="30">Metrô Consolação</text>
+            <text x="148" y="30">Praça do Bairro</text>
+            <text x="52" y="168" font-weight="700">FIAP (origem)</text>
+            <text x="230" y="72" font-weight="700">UBS (destino)</text>
+            <text x="112" y="110" fill="#55575c">Trianon</text>
+            <text x="120" y="194" fill="#55575c">Brigadeiro</text>
+            <text x="180" y="141" fill="#55575c">Ponto</text>
+            <text x="252" y="190" fill="#55575c">Feira</text>
+          </g>
+          <g font-family="Segoe UI" font-size="9.5" fill="#b4540a"><text x="190" y="128">- - - com escada</text></g>
+        </svg>
+      </div>
+      <div class="stat">
+        <div><b>1.550 m</b><span>distância total</span></div>
+        <div><b>2.985</b><span>custo de acessibilidade</span></div>
+      </div>
+      <div><span class="tag a">Cadeirante</span><span class="tag a">Com chuva</span><span class="tag o">Sem escadas</span></div>
+      <div class="steps">
+        <div class="step"><div><div class="dot" style="border-color:var(--ink);background:var(--ink)"></div><div class="ln" style="height:30px"></div></div><div><b>FIAP Paulista</b><div class="seg">700 m · calçada regular</div></div></div>
+        <div class="step"><div><div class="dot"></div><div class="ln" style="height:30px"></div></div><div><b>Metrô Consolação</b><div class="seg">350 m · calçada boa</div></div></div>
+        <div class="step"><div><div class="dot"></div><div class="ln" style="height:30px"></div></div><div><b>Praça do Bairro</b><div class="seg">500 m · <span class="tag w">alto risco de alagamento</span></div></div></div>
+        <div class="step"><div><div class="dot" style="background:var(--accent)"></div></div><div><b>UBS Bela Vista</b></div></div>
+      </div>
+      <div class="row" style="gap:8px"><div class="btn ghost" style="flex:1;font-size:13.5px">Relatar problema</div><div class="btn" style="flex:1;font-size:13.5px">Iniciar</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- 4. Relatar problema -->
+<div class="cell" id="s4">
+  <div class="cap"><b>Tela 4 · Relatar problema</b><code>POST /api/relatos</code></div>
+  <div class="phone">
+    <div class="status"><span>9:41</span><span>▮▮▮ ◔ ▬</span></div>
+    <div class="bar"><span class="back">‹</span><span class="t">Novo relato</span></div>
+    <div class="body">
+      <div><div class="lbl">Trecho</div><div class="in">Praça do Bairro → UBS Bela Vista <span class="ic">▾</span></div></div>
+      <div class="card" style="padding:9px 12px;font-size:12px;color:var(--ink2)">500 m · sem escada · calçada ruim · risco de alagamento 3/3</div>
+      <div>
+        <div class="lbl">Tipo de problema</div>
+        <div class="chips">
+          <span class="chip">Buraco</span><span class="chip">Sem rampa</span>
+          <span class="chip on">✓ Alagamento</span><span class="chip">Iluminação</span><span class="chip">Obstrução</span>
+        </div>
+      </div>
+      <div><div class="lbl">Descrição</div><div class="in ta">Água acumula após chuva forte<small>29/200</small></div></div>
+      <div class="alert">Seu relato fica com status <b>Aberto</b> até ser analisado pela equipe de gestão.</div>
+      <div style="flex:1"></div>
+      <div class="btn">Enviar relato</div>
+    </div>
+    <div class="nav"><div><i></i>Rotas</div><div class="on"><i></i>Relatos</div><div><i></i>Gestão</div><div><i></i>Perfil</div></div>
+  </div>
+</div>
+
+<!-- 5. Meus relatos -->
+<div class="cell" id="s5">
+  <div class="cap"><b>Tela 5 · Relatos</b><code>GET/PUT/DELETE /api/relatos</code></div>
+  <div class="phone">
+    <div class="status"><span>9:41</span><span>▮▮▮ ◔ ▬</span></div>
+    <div class="bar"><span class="t">Relatos da região</span></div>
+    <div class="body" style="gap:10px">
+      <div class="tabs"><span class="on">Todos</span><span>Abertos</span><span>Em análise</span><span>Resolvidos</span></div>
+      <div class="item">
+        <div class="h">Sem rampa <span class="tag w">Aberto</span></div>
+        <p>Metrô Trianon-MASP → UBS Bela Vista</p><p>"Escada sem rampa alternativa"</p>
+        <div class="f">02/10/2026<div class="acts"><span>Editar</span><span class="del">Excluir</span></div></div>
+      </div>
+      <div class="item">
+        <div class="h">Alagamento <span class="tag w">Aberto</span></div>
+        <p>Praça do Bairro → UBS Bela Vista</p><p>"Água acumula após chuva forte"</p>
+        <div class="f">03/10/2026<div class="acts"><span>Editar</span><span class="del">Excluir</span></div></div>
+      </div>
+      <div class="item">
+        <div class="h">Buraco <span class="tag a">Em análise</span></div>
+        <p>Praça do Bairro → UBS Bela Vista</p><p>"Buracos na calçada"</p>
+        <div class="f">05/10/2026<div class="acts"><span>Editar</span></div></div>
+      </div>
+      <div class="item">
+        <div class="h">Iluminação <span class="tag o">Resolvido</span></div>
+        <p>FIAP Paulista → Metrô Consolação</p><p>"Poste apagado à noite"</p>
+        <div class="f">09/10/2026<div class="acts"></div></div>
+      </div>
+    </div>
+    <div class="fab">+ Novo relato</div>
+    <div class="nav"><div><i></i>Rotas</div><div class="on"><i></i>Relatos</div><div><i></i>Gestão</div><div><i></i>Perfil</div></div>
+  </div>
+</div>
+
+<!-- 6. Gestão -->
+<div class="cell" id="s6">
+  <div class="cap"><b>Tela 6 · Gestão</b><code>CRUD /api/trechos e /api/locais</code></div>
+  <div class="phone">
+    <div class="status"><span>9:41</span><span>▮▮▮ ◔ ▬</span></div>
+    <div class="bar"><span class="t">Gestão</span></div>
+    <div class="body" style="gap:10px">
+      <div class="tabs"><span>Locais (8)</span><span class="on">Trechos (11)</span><span>Usuários (5)</span></div>
+      <div class="search">⌕ Buscar trecho por local</div>
+      <div class="item">
+        <div class="h">FIAP Paulista → Metrô Trianon-MASP<span style="font-size:12px;color:var(--ink2)">300 m</span></div>
+        <div><span class="tag o">Sem escada</span><span class="tag n">Calçada 0/3</span><span class="tag n">Alagamento 0/3</span></div>
+        <div class="f">Trecho #1<div class="acts"><span>Editar</span><span class="del">Excluir</span></div></div>
+      </div>
+      <div class="item">
+        <div class="h">Metrô Trianon-MASP → UBS Bela Vista<span style="font-size:12px;color:var(--ink2)">450 m</span></div>
+        <div><span class="tag w">Com escada</span><span class="tag n">Calçada 2/3</span><span class="tag n">Alagamento 1/3</span></div>
+        <div class="f">Trecho #5 · 1 relato aberto<div class="acts"><span>Editar</span><span class="del">Excluir</span></div></div>
+      </div>
+      <div class="item">
+        <div class="h">Praça do Bairro → UBS Bela Vista<span style="font-size:12px;color:var(--ink2)">500 m</span></div>
+        <div><span class="tag o">Sem escada</span><span class="tag n">Calçada 2/3</span><span class="tag w">Alagamento 3/3</span></div>
+        <div class="f">Trecho #7 · 2 relatos<div class="acts"><span>Editar</span><span class="del">Excluir</span></div></div>
+      </div>
+      <div class="item">
+        <div class="h">Feira Livre → UBS Bela Vista<span style="font-size:12px;color:var(--ink2)">300 m</span></div>
+        <div><span class="tag o">Sem escada</span><span class="tag w">Calçada 3/3</span><span class="tag w">Alagamento 3/3</span></div>
+        <div class="f">Trecho #10 · 1 relato<div class="acts"><span>Editar</span><span class="del">Excluir</span></div></div>
+      </div>
+    </div>
+    <div class="fab">+ Novo trecho</div>
+    <div class="nav"><div><i></i>Rotas</div><div><i></i>Relatos</div><div class="on"><i></i>Gestão</div><div><i></i>Perfil</div></div>
+  </div>
+</div>
+
+</div>
+
+<div class="legend">
+  <span><i style="background:var(--accent)"></i>ação ou rota selecionada</span>
+  <span><i style="background:var(--warn-soft);border:1px solid var(--warn)"></i>alerta de acessibilidade</span>
+  <span><i style="background:var(--ok-soft);border:1px solid var(--ok)"></i>trecho adequado</span>
+  <span style="margin-left:auto">Dados fictícios, os mesmos de banco/02_dados_exemplo.sql</span>
+</div>
+
+<script>
+  var s = new URLSearchParams(location.search).get('s');
+  if (s) { document.body.classList.add('single'); document.getElementById('s' + s).classList.add('show'); }
+</script>
+</body>
+</html>
